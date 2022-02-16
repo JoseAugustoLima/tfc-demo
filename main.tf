@@ -25,43 +25,8 @@ provider "aws" {
 
 resource "aws_instance" "demo_server" {
   ami           = "ami-02e136e904f3da870"
-  instance_type = "t2.small"
+  instance_type = "t2.nano"
   tags = {
     Name = var.instance_name
-  }
-}
-
-resource "aws_kms_key" "objects" {
-  description             = "KMS key is used to encrypt bucket objects"
-  deletion_window_in_days = 7
-}
-
-resource "random_pet" "random" {
-  
-}
-
-module "s3_bucket" {
-  source = "terraform-aws-modules/s3-bucket/aws"
-
-  bucket        = "my-demo-s3-${random_pet.random.id}"
-  acl           = "private"
-  force_destroy = true
-
-  versioning = {
-    enabled = false
-  }
-
-  tags = {
-     Owner   = "SE"
-     Purpose = "Demo"
-  }
-
-  server_side_encryption_configuration = {
-    rule = {
-      apply_server_side_encryption_by_default = {
-        kms_master_key_id = aws_kms_key.objects.arn
-        sse_algorithm     = "aws:kms"
-      }
-    }
   }
 }
