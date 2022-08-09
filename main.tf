@@ -28,7 +28,7 @@ resource "aws_instance" "demo_server" {
   instance_type = "t2.nano"
   
   tags = {
-    Name = "Demo-TFC2"
+    Name = "Demo-TFC"
   }
   
 }
